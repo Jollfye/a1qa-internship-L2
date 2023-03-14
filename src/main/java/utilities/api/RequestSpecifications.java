@@ -1,4 +1,4 @@
-package utilities;
+package utilities.api;
 
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
