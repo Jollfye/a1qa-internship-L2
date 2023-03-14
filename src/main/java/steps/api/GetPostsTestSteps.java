@@ -25,12 +25,12 @@ public class GetPostsTestSteps extends BaseSteps {
     public void verifyResponsePostsSortedAscendingById() {
         List<Post> posts = List.of(ResponseUtils.responseAs(response, Post[].class));
         SoftAssert softAssert = new SoftAssert();
-        posts.stream()
-                .limit(posts.size() - 1)
-                .forEach(post -> softAssert.assertTrue(
-                        post.getId() < posts.get(posts.indexOf(post) + 1).getId(),
-                        String.format("Posts are not sorted ascending (by id). Ids: %d, %d",
-                                post.getId(), posts.get(posts.indexOf(post) + 1).getId())));
+        for (int i = 0; i < posts.size() - 1; i++) {
+            softAssert.assertTrue(
+                    posts.get(i).getId() < posts.get(i + 1).getId(),
+                    String.format("Posts are not sorted ascending (by id). Ids: %d, %d",
+                            posts.get(i).getId(), posts.get(i + 1).getId()));
+        }
         softAssert.assertAll();
     }
 }
