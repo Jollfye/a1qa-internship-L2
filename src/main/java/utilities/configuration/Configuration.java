@@ -12,4 +12,12 @@ public class Configuration {
     public static String getApiUrl() {
         return configuration.getValue("/apiUrl").toString();
     }
+
+    public static String getPostsPath() {
+        return configuration.getValue("/postsPath").toString();
+    }
+
+    public static String getUsersPath() {
+        return configuration.getValue("/usersPath").toString();
+    }
 }
