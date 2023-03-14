@@ -3,11 +3,12 @@
 <suite name="API Test Suite">
     <test name="API">
         <classes>
-            <class name="tests.api.RestApiTest">
-                <methods>
-                    <include name="testRestApi"/>
-                </methods>
-            </class>
+            <class name="tests.api.GetPostsTest"/>
+            <class name="tests.api.GetPostWithIdTest"/>
+            <class name="tests.api.GetPostWithResponseBodyEmptyTest"/>
+            <class name="tests.api.CreatePostTest"/>
+            <class name="tests.api.GetUsersTest"/>
+            <class name="tests.api.GetUserWithIdTest"/>
         </classes>
     </test>
 </suite>
