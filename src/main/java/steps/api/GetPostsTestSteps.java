@@ -27,9 +27,10 @@ public class GetPostsTestSteps extends BaseSteps {
         SoftAssert softAssert = new SoftAssert();
         posts.stream()
                 .limit(posts.size() - 1)
-                .forEach(post -> softAssert.assertTrue(post.getId() < post.getId() + 1,
+                .forEach(post -> softAssert.assertTrue(
+                        post.getId() < posts.get(posts.indexOf(post) + 1).getId(),
                         String.format("Posts are not sorted ascending (by id). Ids: %d, %d",
-                                post.getId(), post.getId() + 1)));
+                                post.getId(), posts.get(posts.indexOf(post) + 1).getId())));
         softAssert.assertAll();
     }
 }
