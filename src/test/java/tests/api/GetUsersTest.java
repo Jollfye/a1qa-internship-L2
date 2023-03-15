@@ -1,15 +1,17 @@
 package tests.api;
 
 import org.testng.annotations.Test;
-import steps.api.GetUsersTestSteps;
+import steps.api.ApiUsersSteps;
+import utilities.configuration.TestDataProvider;
 
 public class GetUsersTest {
-    private final GetUsersTestSteps getUsersTestSteps = new GetUsersTestSteps();
+    private final ApiUsersSteps apiUsersSteps = new ApiUsersSteps();
 
     @Test
     public void testGetUsers() {
-        getUsersTestSteps.getUsersByRequest();
-        getUsersTestSteps.verifyResponseStatusCodeAndBodyType();
-        getUsersTestSteps.verifyResponseUserWithIdEqualsTestUser();
+        apiUsersSteps.verifyUserWithIdFromUsersEqualsTestUser(
+                apiUsersSteps.getUsersByRequest(),
+                TestDataProvider.getTestUserId(),
+                TestDataProvider.getTestUser());
     }
 }

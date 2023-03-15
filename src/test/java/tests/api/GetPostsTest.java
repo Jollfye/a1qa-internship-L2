@@ -1,15 +1,14 @@
 package tests.api;
 
 import org.testng.annotations.Test;
-import steps.api.GetPostsTestSteps;
+import steps.api.ApiPostsSteps;
 
 public class GetPostsTest {
-    private final GetPostsTestSteps getPostsTestSteps = new GetPostsTestSteps();
+    private final ApiPostsSteps apiPostsSteps = new ApiPostsSteps();
 
     @Test
     public void testGetPosts() {
-        getPostsTestSteps.getPostsByRequest();
-        getPostsTestSteps.verifyResponseStatusCodeAndBodyType();
-        getPostsTestSteps.verifyResponsePostsSortedAscendingById();
+        apiPostsSteps.verifyPostsSortedById(
+                apiPostsSteps.getPostsByRequest(), true);
     }
 }

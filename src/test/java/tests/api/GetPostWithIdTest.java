@@ -1,15 +1,15 @@
 package tests.api;
 
 import org.testng.annotations.Test;
-import steps.api.GetPostWithIdTestSteps;
+import steps.api.ApiPostsSteps;
+import utilities.configuration.TestDataProvider;
 
 public class GetPostWithIdTest {
-    private final GetPostWithIdTestSteps getPostWithIdTestSteps = new GetPostWithIdTestSteps();
+    private final ApiPostsSteps apiPostsSteps = new ApiPostsSteps();
 
     @Test
     public void testGetPostWithId() {
-        getPostWithIdTestSteps.getPostWithIdByRequest();
-        getPostWithIdTestSteps.verifyResponseStatusCodeAndBodyType();
-        getPostWithIdTestSteps.verifyResponsePostInformationCorrect();
+        apiPostsSteps.verifyPostInformationCorrect(
+                apiPostsSteps.getPostWithIdByRequest(TestDataProvider.getPostId()));
     }
 }
