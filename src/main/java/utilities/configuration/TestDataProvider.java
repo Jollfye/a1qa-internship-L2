@@ -9,14 +9,14 @@ import utilities.JsonReader;
 @UtilityClass
 public class TestDataProvider {
     private static final ISettingsFile getPostWithIdTestData =
-            JsonReader.getSettingsResourceFile("getPostWithIdTestData.json");
-    private static final ISettingsFile getPostWithResponseBodyEmptyTestData =
-            JsonReader.getSettingsResourceFile("getPostWithResponseBodyEmptyTestData.json");
+            JsonReader.getSettingsResourceFile("testdata/getPostWithIdTestData.json");
+    private static final ISettingsFile getResponseForNonExistentPostTestData =
+            JsonReader.getSettingsResourceFile("testdata/getResponseForNonExistentPostTestData.json");
     private static final ISettingsFile createPostTestData =
-            JsonReader.getSettingsResourceFile("createPostTestData.json");
+            JsonReader.getSettingsResourceFile("testdata/createPostTestData.json");
     private static final String testUser = FileReader.getFileContent(
             FileReader.getCanonicalPath(
-                    FileReader.getResourceFile("testUser.json")));
+                    FileReader.getResourceFile("testdata/testUser.json")));
 
     public static int getPostId() {
         return (int) getPostWithIdTestData.getValue("/postId");
@@ -26,8 +26,8 @@ public class TestDataProvider {
         return (int) getPostWithIdTestData.getValue("/postUserId");
     }
 
-    public static int getPostIdWithResponseBodyEmpty() {
-        return (int) getPostWithResponseBodyEmptyTestData.getValue("/postIdWithResponseBodyEmpty");
+    public static int getNonExistentPostId() {
+        return (int) getResponseForNonExistentPostTestData.getValue("/nonExistentPostId");
     }
 
     public static int getPostRequestUserId() {
