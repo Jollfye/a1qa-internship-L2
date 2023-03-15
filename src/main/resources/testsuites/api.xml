@@ -5,7 +5,7 @@
         <classes>
             <class name="tests.api.GetPostsTest"/>
             <class name="tests.api.GetPostWithIdTest"/>
-            <class name="tests.api.GetPostWithResponseBodyEmptyTest"/>
+            <class name="tests.api.GetResponseForNonExistentPostTest"/>
             <class name="tests.api.CreatePostTest"/>
             <class name="tests.api.GetUsersTest"/>
             <class name="tests.api.GetUserWithIdTest"/>
