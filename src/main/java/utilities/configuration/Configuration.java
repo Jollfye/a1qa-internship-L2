@@ -12,4 +12,8 @@ public class Configuration {
     public static String getStartUrl() {
         return configuration.getValue("/startUrl").toString();
     }
+
+    public static String getApiUrl() {
+        return configuration.getValue("/apiUrl").toString();
+    }
 }
