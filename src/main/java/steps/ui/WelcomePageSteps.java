@@ -11,7 +11,7 @@ public class WelcomePageSteps {
     }
 
     public void typePhoneAndClickSignInButton() {
-        welcomePage.typePhone(TestDataProvider.getLoginPhone());
+        welcomePage.typeLogin(TestDataProvider.getLogin());
         welcomePage.clickSignInButton();
     }
 }

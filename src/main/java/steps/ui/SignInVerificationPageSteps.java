@@ -12,7 +12,7 @@ public class SignInVerificationPageSteps {
 
     public void signInUsingPassword() {
         signInVerificationPage.clickUsePasswordButton();
-        signInVerificationPage.typePassword(TestDataProvider.getLoginPassword());
+        signInVerificationPage.typePassword(TestDataProvider.getPassword());
         signInVerificationPage.clickContinueButton();
     }
 }

@@ -11,11 +11,11 @@ public class TestDataProvider {
     private static final ISettingsFile vkUiAndApiTestData =
             JsonReader.getSettingsResourceFile("testdata/vkUiAndApiTestData.json");
 
-    public static String getLoginPhone() {
-        return vkCredentials.getValue("/loginPhone").toString();
+    public static String getLogin() {
+        return vkCredentials.getValue("/login").toString();
     }
 
-    public static String getLoginPassword() {
-        return vkCredentials.getValue("/loginPassword").toString();
+    public static String getPassword() {
+        return vkCredentials.getValue("/password").toString();
     }
 }
