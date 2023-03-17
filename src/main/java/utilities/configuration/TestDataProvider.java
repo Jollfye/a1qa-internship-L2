@@ -18,4 +18,8 @@ public class TestDataProvider {
     public static String getPassword() {
         return vkCredentials.getValue("/password").toString();
     }
+
+    public static String getAccessToken() {
+        return vkCredentials.getValue("/access_token").toString();
+    }
 }
