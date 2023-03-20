@@ -13,10 +13,6 @@ public class RequestUtils {
         return RequestSpecifications.commonGiven().when().get(path);
     }
 
-    public static Response sendPostRequest(String path) {
-        return RequestSpecifications.commonGiven().when().post(path);
-    }
-
     public static Response sendGetRequestWithParams(String path, Map<String, Object> params) {
         RequestSpecification request = RequestSpecifications.commonGiven();
         for (Map.Entry<String, Object> entry : params.entrySet()) {

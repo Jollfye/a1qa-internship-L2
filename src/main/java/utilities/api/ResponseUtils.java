@@ -20,15 +20,6 @@ public class ResponseUtils {
         return response;
     }
 
-    public static Response getVerifiedResponseForPostRequest(
-            String path,
-            int expectedStatus, ContentType expectedContentType,
-            List<String> nonNullPaths) {
-        Response response = RequestUtils.sendPostRequest(path);
-        verifyResponse(response, expectedStatus, expectedContentType, nonNullPaths);
-        return response;
-    }
-
     public static Response getVerifiedResponseForGetRequestWithParams(
             String path, Map<String, Object> params,
             int expectedStatus, ContentType expectedContentType,
@@ -90,8 +81,4 @@ public class ResponseUtils {
         response.then().body(path, Matchers.hasItem(expectedItem));
     }
 
-    public static <T> T getObject(
-            Response response, String path, Class<T> objectType) {
-        return response.jsonPath().getObject(path, objectType);
-    }
 }
