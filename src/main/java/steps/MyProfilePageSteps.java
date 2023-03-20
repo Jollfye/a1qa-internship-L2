@@ -1,4 +1,4 @@
-package steps.ui;
+package steps;
 
 import models.Comment;
 import models.Post;

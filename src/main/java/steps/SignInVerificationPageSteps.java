@@ -1,4 +1,4 @@
-package steps.ui;
+package steps;
 
 import org.testng.Assert;
 import pages.NewsPage;
