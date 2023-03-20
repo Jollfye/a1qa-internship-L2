@@ -10,7 +10,7 @@ public class NewsPage extends Form {
             "My profile link");
 
     public NewsPage() {
-        super(By.id("feed_rows"), "News page");
+        super(By.xpath("(//a[contains(@id,'feed_story')])[1]"), "News page");
     }
 
     public void clickMyProfileLink() {
