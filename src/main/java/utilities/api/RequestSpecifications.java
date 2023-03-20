@@ -9,7 +9,7 @@ import static io.restassured.RestAssured.given;
 
 @UtilityClass
 public class RequestSpecifications {
-    public static RequestSpecification commonGiven() {
+    public static RequestSpecification VkApiCommonGiven() {
         return given()
                 .baseUri(Configuration.getApiUrl())
                 .param("v", Configuration.getApiVersion())
