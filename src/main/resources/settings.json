@@ -1,5 +1,5 @@
 {
-  "browserName" : "chrome",
+  "browserName" : "firefox",
   "isRemote": false,
   "remoteConnectionUrl": "http://localhost:4444/wd/hub",
   "isElementHighlightEnabled" : true,
@@ -45,7 +45,7 @@
       "capabilities": {
       },
       "options": {
-        "intl.accept_languages": "en",
+        "intl.accept_languages": "ru-RU",
         "browser.download.dir": "./downloads",
         "browser.download.folderList": 2,
         "browser.helperApps.neverAsk.saveToDisk": "application/octet-stream, application/x-debian-package, application/x-www-form-urlencod, application/json, application/x-compressed, application/x-zip-compressed, application/zip, multipart/x-zip, text/plain, text/csv",
