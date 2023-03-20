@@ -22,4 +22,8 @@ public class TestDataProvider {
     public static String getAccessToken() {
         return vkCredentials.getValue("/access_token").toString();
     }
+
+    public static int getRandomAlphanumericLength() {
+        return (int) vkUiAndApiTestData.getValue("/randomAlphanumericLength");
+    }
 }

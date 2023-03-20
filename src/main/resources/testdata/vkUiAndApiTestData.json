@@ -1,3 +1,3 @@
 {
-  "passwordLength": 10
+  "randomAlphanumericLength": 100
 }
