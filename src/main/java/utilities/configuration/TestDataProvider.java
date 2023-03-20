@@ -9,7 +9,7 @@ public class TestDataProvider {
     private static final ISettingsFile vkCredentials =
             JsonReader.getSettingsResourceFile("testdata/vkCredentials.json");
     private static final ISettingsFile vkUiAndApiTestData =
-            JsonReader.getSettingsResourceFile("testdata/vkUiAndApiTestData.json");
+            JsonReader.getSettingsResourceFile("testdata/vkMyProfileWallPostTestData.json");
 
     public static String getLogin() {
         return vkCredentials.getValue("/login").toString();

@@ -14,7 +14,7 @@ import utilities.GetModelInstanceUtils;
 import utilities.RandomUtils;
 import utilities.configuration.TestDataProvider;
 
-public class VkUiAndApiTest extends BaseTest {
+public class VkMyProfileWallPostTest extends BaseTest {
     private final WelcomePageSteps welcomePageSteps = new WelcomePageSteps();
     private final SignInVerificationPageSteps signInVerificationPageSteps =
             new SignInVerificationPageSteps();
@@ -23,7 +23,7 @@ public class VkUiAndApiTest extends BaseTest {
     private final MyProfilePageSteps myProfilePageSteps = new MyProfilePageSteps();
 
     @Test
-    public void testVkUiAndApi() {
+    public void testVkMyProfileWallPost() {
         welcomePageSteps.typePhoneAndClickSignInButton();
         signInVerificationPageSteps.signInUsingPassword();
         newsPageSteps.clickMyProfileLink();

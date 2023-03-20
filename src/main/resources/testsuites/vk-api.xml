@@ -3,7 +3,7 @@
 <suite name="VK API Test Suite">
     <test name="VK API">
         <classes>
-            <class name="tests.VkUiAndApiTest"/>
+            <class name="tests.VkMyProfileWallPostTest"/>
         </classes>
     </test>
 </suite>
