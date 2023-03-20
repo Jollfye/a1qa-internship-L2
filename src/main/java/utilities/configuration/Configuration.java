@@ -16,4 +16,8 @@ public class Configuration {
     public static String getApiUrl() {
         return configuration.getValue("/apiUrl").toString();
     }
+
+    public static String getApiVersion() {
+        return configuration.getValue("/apiVersion").toString();
+    }
 }
