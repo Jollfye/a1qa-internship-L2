@@ -7,6 +7,7 @@ import models.Comment;
 import models.Photo;
 import models.Post;
 import models.User;
+import org.apache.hc.core5.http.HttpStatus;
 import utilities.JsonReader;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class VkApiUtils {
         List<String> nonNullPaths = List.of(userIdPath);
         Response response = ResponseUtils.getVerifiedResponseForGetRequest(
                 RequestSpecifications.VkApiCommonGiven(), "/users.get",
-                200, ContentType.JSON, nonNullPaths);
+                HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         user.setId(response.jsonPath().getInt(userIdPath));
     }
 
@@ -32,7 +33,7 @@ public class VkApiUtils {
         params.put("message", post.getMessage());
         Response response = ResponseUtils.getVerifiedResponseForPostRequestWithParams(
                 RequestSpecifications.VkApiCommonGiven(), "/wall.post", params,
-                200, ContentType.JSON, nonNullPaths);
+                HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         post.setId(response.jsonPath().getInt(postIdPath));
         post.setOwnerId(user.getId());
     }
@@ -43,7 +44,7 @@ public class VkApiUtils {
         List<String> nonNullPaths = List.of(userIdPath, uploadUrlPath);
         Response response = ResponseUtils.getVerifiedResponseForGetRequest(
                 RequestSpecifications.VkApiCommonGiven(), "/photos.getWallUploadServer",
-                200, ContentType.JSON, nonNullPaths);
+                HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         ResponseUtils.verifyResponsePathValue(response, userIdPath, user.getId());
         return response.jsonPath().getString(uploadUrlPath);
     }
@@ -55,7 +56,7 @@ public class VkApiUtils {
         List<String> nonNullPaths = List.of(serverPath, photoPath, hashPath);
         Response response = ResponseUtils.getVerifiedResponseForPostRequestWithFile(
                 RequestSpecifications.VkApiCommonGiven(), uploadUrl, photoPath, photo.getFile(),
-                200, ContentType.HTML, nonNullPaths);
+                HttpStatus.SC_OK, ContentType.HTML, nonNullPaths);
         photo.setServer(response.jsonPath().getInt(serverPath));
         photo.setPhoto(JsonReader.unescapeJson(
                 response.jsonPath().getString(photoPath)));
@@ -72,7 +73,7 @@ public class VkApiUtils {
         params.put("hash", photo.getHash());
         Response response = ResponseUtils.getVerifiedResponseForGetRequestWithParams(
                 RequestSpecifications.VkApiCommonGiven(), "/photos.saveWallPhoto", params,
-                200, ContentType.JSON, nonNullPaths);
+                HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         ResponseUtils.verifyResponsePathValue(response, ownerIdPath, user.getId());
         photo.setId(response.jsonPath().getInt(photoIdPath));
         photo.setOwnerId(user.getId());
@@ -88,7 +89,7 @@ public class VkApiUtils {
         params.put("attachments", attachments);
         Response response = ResponseUtils.getVerifiedResponseForPostRequestWithParams(
                 RequestSpecifications.VkApiCommonGiven(), "/wall.edit", params,
-                200, ContentType.JSON, nonNullPaths);
+                HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         ResponseUtils.verifyResponsePathValue(response, postIdPath, post.getId());
         post.setMessage(message);
         post.setAttachments(attachments);
@@ -107,7 +108,7 @@ public class VkApiUtils {
         params.put("message", comment.getMessage());
         Response response = ResponseUtils.getVerifiedResponseForPostRequestWithParams(
                 RequestSpecifications.VkApiCommonGiven(), "/wall.createComment", params,
-                200, ContentType.JSON, nonNullPaths);
+                HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         comment.setId(response.jsonPath().getInt(commentIdPath));
         comment.setPostId(post.getId());
         comment.setOwnerId(post.getOwnerId());
@@ -122,7 +123,7 @@ public class VkApiUtils {
         params.put("item_id", post.getId());
         Response response = ResponseUtils.getVerifiedResponseForGetRequestWithParams(
                 RequestSpecifications.VkApiCommonGiven(), "/likes.getList", params,
-                200, ContentType.JSON, nonNullPaths);
+                HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         ResponseUtils.verifyResponseContainsItem(response, userIdPath, user.getId());
     }
 
@@ -134,7 +135,7 @@ public class VkApiUtils {
         params.put("post_id", post.getId());
         Response response = ResponseUtils.getVerifiedResponseForPostRequestWithParams(
                 RequestSpecifications.VkApiCommonGiven(), "/wall.delete", params,
-                200, ContentType.JSON, nonNullPaths);
+                HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         ResponseUtils.verifyResponsePathValue(response, responsePath, 1);
     }
 
@@ -146,7 +147,7 @@ public class VkApiUtils {
         params.put("photo_id", photo.getId());
         Response response = ResponseUtils.getVerifiedResponseForPostRequestWithParams(
                 RequestSpecifications.VkApiCommonGiven(), "/photos.delete", params,
-                200, ContentType.JSON, nonNullPaths);
+                HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         ResponseUtils.verifyResponsePathValue(response, responsePath, 1);
     }
 }
