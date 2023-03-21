@@ -21,7 +21,7 @@ public class VkMyProfileWallPostTest extends BaseTest {
     private final NewsPageSteps newsPageSteps = new NewsPageSteps();
     private final MyProfilePageSteps myProfilePageSteps = new MyProfilePageSteps();
 
-    @Test
+    @Test(invocationCount = 3)
     public void testVkMyProfileWallPost() {
         welcomePageSteps.typePhoneAndClickSignInButton();
         signInVerificationPageSteps.signInUsingPassword();

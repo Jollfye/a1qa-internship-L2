@@ -25,10 +25,6 @@ public class TestDataProvider {
         return vkCredentials.getValue("/access_token").toString();
     }
 
-    public static int getVkMyProfileWallPostTestInvocationCount() {
-        return (int) vkMyProfileWallPostTestData.getValue("/testInvocationCount");
-    }
-
     public static int getRandomAlphanumericLength() {
         return (int) vkMyProfileWallPostTestData.getValue("/randomAlphanumericLength");
     }
