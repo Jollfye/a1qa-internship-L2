@@ -8,7 +8,7 @@ import utilities.JsonReader;
 public class TestDataProvider {
     private static final ISettingsFile vkCredentials =
             JsonReader.getSettingsResourceFile("testdata/vkCredentials.json");
-    private static final ISettingsFile vkUiAndApiTestData =
+    private static final ISettingsFile vkMyProfileWallPostTestData =
             JsonReader.getSettingsResourceFile("testdata/vkMyProfileWallPostTestData.json");
     private static final ISettingsFile vkApiUtilsData =
             JsonReader.getSettingsResourceFile("testdata/vkApiData.json");
@@ -25,8 +25,12 @@ public class TestDataProvider {
         return vkCredentials.getValue("/access_token").toString();
     }
 
+    public static int getVkMyProfileWallPostTestInvocationCount() {
+        return (int) vkMyProfileWallPostTestData.getValue("/testInvocationCount");
+    }
+
     public static int getRandomAlphanumericLength() {
-        return (int) vkUiAndApiTestData.getValue("/randomAlphanumericLength");
+        return (int) vkMyProfileWallPostTestData.getValue("/randomAlphanumericLength");
     }
 
     public static String getPostType() {
