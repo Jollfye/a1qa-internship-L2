@@ -8,9 +8,9 @@ import java.io.File;
 public class Photo {
     private Integer id;
     private Integer ownerId;
+    private String type;
     private File file;
     private Integer server;
     private String photo;
     private String hash;
-    private String type = "photo";
 }

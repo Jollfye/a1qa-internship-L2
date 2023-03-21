@@ -6,7 +6,7 @@ import lombok.Data;
 public class Post {
     private Integer id;
     private Integer ownerId;
+    private String type;
     private String message;
     private String attachments;
-    private String type = "post";
 }
