@@ -1,4 +1,4 @@
-package steps;
+package steps.ui;
 
 import lombok.experimental.UtilityClass;
 import models.Comment;
