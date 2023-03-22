@@ -10,8 +10,6 @@ public class TestDataProvider {
             JsonReader.getSettingsResourceFile("testdata/vkCredentials.json");
     private static final ISettingsFile vkMyProfileWallPostTestData =
             JsonReader.getSettingsResourceFile("testdata/vkMyProfileWallPostTestData.json");
-    private static final ISettingsFile vkApiUtilsData =
-            JsonReader.getSettingsResourceFile("testdata/vkApiData.json");
 
     public static String getLogin() {
         return vkCredentials.getValue("/login").toString();
@@ -27,17 +25,5 @@ public class TestDataProvider {
 
     public static int getRandomAlphanumericLength() {
         return (int) vkMyProfileWallPostTestData.getValue("/randomAlphanumericLength");
-    }
-
-    public static String getPostType() {
-        return vkApiUtilsData.getValue("/postType").toString();
-    }
-
-    public static String getPhotoType() {
-        return vkApiUtilsData.getValue("/photoType").toString();
-    }
-
-    public static String getCommentType() {
-        return vkApiUtilsData.getValue("/commentType").toString();
     }
 }
