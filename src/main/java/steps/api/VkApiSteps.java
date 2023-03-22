@@ -1,4 +1,4 @@
-package utilities.api;
+package steps.api;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -9,6 +9,8 @@ import models.Post;
 import models.User;
 import org.apache.hc.core5.http.HttpStatus;
 import utilities.JsonReader;
+import utilities.api.RequestSpecifications;
+import utilities.api.ResponseUtils;
 import utilities.api.constants.VkApiMethodPath;
 import utilities.api.constants.VkApiParam;
 import utilities.api.constants.VkApiResponsePath;
@@ -18,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @UtilityClass
-public class VkApiUtils {
+public class VkApiSteps {
     public static void setCurrentUserData(User user) {
         String userIdPath = VkApiResponsePath.FIRST_ITEM_ID;
         String firstNamePath = VkApiResponsePath.FIRST_USER_FIRST_NAME;
