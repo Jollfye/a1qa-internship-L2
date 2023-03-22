@@ -1,21 +1,18 @@
 package steps;
 
+import lombok.experimental.UtilityClass;
 import org.testng.Assert;
-import pages.MyProfilePage;
+import pages.WallForm;
 import pages.NewsPage;
 
+@UtilityClass
 public class NewsPageSteps {
-    private final NewsPage newsPage;
-    private final MyProfilePage myProfilePage;
+    private static final NewsPage newsPage = new NewsPage();
+    private static final WallForm wallForm = new WallForm();
 
-    public NewsPageSteps() {
-        newsPage = new NewsPage();
-        myProfilePage = new MyProfilePage();
-    }
-
-    public void clickMyProfileLink() {
+    public static void clickMyProfileLink() {
         newsPage.clickMyProfileLink();
-        Assert.assertTrue(myProfilePage.state().waitForDisplayed(),
-                myProfilePage.getName() + " is not open");
+        Assert.assertTrue(wallForm.state().waitForDisplayed(),
+                wallForm.getName() + " is not open");
     }
 }
