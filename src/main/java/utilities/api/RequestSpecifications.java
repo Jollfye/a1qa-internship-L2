@@ -2,6 +2,7 @@ package utilities.api;
 
 import io.restassured.specification.RequestSpecification;
 import lombok.experimental.UtilityClass;
+import utilities.api.constants.VkApiParam;
 import utilities.configuration.Configuration;
 import utilities.configuration.TestDataProvider;
 
@@ -12,7 +13,7 @@ public class RequestSpecifications {
     public static RequestSpecification VkApiCommonGiven() {
         return given()
                 .baseUri(Configuration.getApiUrl())
-                .param("v", Configuration.getApiVersion())
-                .param("access_token", TestDataProvider.getAccessToken());
+                .param(VkApiParam.VERSION, Configuration.getApiVersion())
+                .param(VkApiParam.ACCESS_TOKEN, TestDataProvider.getAccessToken());
     }
 }

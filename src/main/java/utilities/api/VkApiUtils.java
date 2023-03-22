@@ -9,6 +9,9 @@ import models.Post;
 import models.User;
 import org.apache.hc.core5.http.HttpStatus;
 import utilities.JsonReader;
+import utilities.api.constants.VkApiMethodPath;
+import utilities.api.constants.VkApiParam;
+import utilities.api.constants.VkApiResponsePath;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,43 +19,47 @@ import java.util.Map;
 
 @UtilityClass
 public class VkApiUtils {
-    public static void setUserIdToCurrentByRequest(User user) {
-        String userIdPath = "response[0].id";
-        List<String> nonNullPaths = List.of(userIdPath);
+    public static void setCurrentUserData(User user) {
+        String userIdPath = VkApiResponsePath.FIRST_ITEM_ID;
+        String firstNamePath = VkApiResponsePath.FIRST_USER_FIRST_NAME;
+        String lastNamePath = VkApiResponsePath.FIRST_USER_LAST_NAME;
+        List<String> nonNullPaths = List.of(userIdPath, firstNamePath, lastNamePath);
         Response response = ResponseUtils.getVerifiedResponseForGetRequest(
-                RequestSpecifications.VkApiCommonGiven(), "/users.get",
+                RequestSpecifications.VkApiCommonGiven(), VkApiMethodPath.USERS_GET,
                 HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         user.setId(response.jsonPath().getInt(userIdPath));
+        user.setFirstName(response.jsonPath().getString(firstNamePath));
+        user.setLastName(response.jsonPath().getString(lastNamePath));
     }
 
-    public static void createUserWallPostByRequest(User user, Post post) {
-        String postIdPath = "response.post_id";
+    public static void createUserWallPost(User user, Post post) {
+        String postIdPath = VkApiResponsePath.POST_ID;
         List<String> nonNullPaths = List.of(postIdPath);
         Map<String, Object> params = new HashMap<>();
-        params.put("owner_id", user.getId());
-        params.put("message", post.getMessage());
+        params.put(VkApiParam.OWNER_ID, user.getId());
+        params.put(VkApiParam.MESSAGE, post.getMessage());
         Response response = ResponseUtils.getVerifiedResponseForPostRequestWithParams(
-                RequestSpecifications.VkApiCommonGiven(), "/wall.post", params,
+                RequestSpecifications.VkApiCommonGiven(), VkApiMethodPath.WALL_POST, params,
                 HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         post.setId(response.jsonPath().getInt(postIdPath));
         post.setOwnerId(user.getId());
     }
 
-    public static String getUserPhotosWallUploadServerByRequest(User user) {
-        String userIdPath = "response.user_id";
-        String uploadUrlPath = "response.upload_url";
+    public static String getUserPhotosWallUploadServer(User user) {
+        String userIdPath = VkApiResponsePath.USER_ID;
+        String uploadUrlPath = VkApiResponsePath.UPLOAD_URL;
         List<String> nonNullPaths = List.of(userIdPath, uploadUrlPath);
         Response response = ResponseUtils.getVerifiedResponseForGetRequest(
-                RequestSpecifications.VkApiCommonGiven(), "/photos.getWallUploadServer",
+                RequestSpecifications.VkApiCommonGiven(), VkApiMethodPath.PHOTOS_GET_WALL_UPLOAD_SERVER,
                 HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         ResponseUtils.verifyResponsePathValue(response, userIdPath, user.getId());
         return response.jsonPath().getString(uploadUrlPath);
     }
 
-    public static void uploadPhotoToWallUploadServerByRequest(Photo photo, String uploadUrl) {
-        String serverPath = "server";
-        String photoPath = "photo";
-        String hashPath = "hash";
+    public static void uploadPhotoToWallUploadServer(Photo photo, String uploadUrl) {
+        String serverPath = VkApiResponsePath.SERVER;
+        String photoPath = VkApiResponsePath.PHOTO;
+        String hashPath = VkApiResponsePath.HASH;
         List<String> nonNullPaths = List.of(serverPath, photoPath, hashPath);
         Response response = ResponseUtils.getVerifiedResponseForPostRequestWithFile(
                 RequestSpecifications.VkApiCommonGiven(), uploadUrl, photoPath, photo.getFile(),
@@ -63,32 +70,32 @@ public class VkApiUtils {
         photo.setHash(response.jsonPath().getString(hashPath));
     }
 
-    public static void saveUserWallPhotoByRequest(User user, Photo photo) {
-        String photoIdPath = "response[0].id";
-        String ownerIdPath = "response[0].owner_id";
+    public static void saveUserWallPhoto(User user, Photo photo) {
+        String photoIdPath = VkApiResponsePath.FIRST_ITEM_ID;
+        String ownerIdPath = VkApiResponsePath.FIRST_ITEM_OWNER_ID;
         List<String> nonNullPaths = List.of(photoIdPath, ownerIdPath);
         Map<String, Object> params = new HashMap<>();
-        params.put("server", photo.getServer());
-        params.put("photo", photo.getPhoto());
-        params.put("hash", photo.getHash());
+        params.put(VkApiParam.SERVER, photo.getServer());
+        params.put(VkApiParam.PHOTO, photo.getPhoto());
+        params.put(VkApiParam.HASH, photo.getHash());
         Response response = ResponseUtils.getVerifiedResponseForGetRequestWithParams(
-                RequestSpecifications.VkApiCommonGiven(), "/photos.saveWallPhoto", params,
+                RequestSpecifications.VkApiCommonGiven(), VkApiMethodPath.PHOTOS_SAVE_WALL_PHOTO, params,
                 HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         ResponseUtils.verifyResponsePathValue(response, ownerIdPath, user.getId());
         photo.setId(response.jsonPath().getInt(photoIdPath));
         photo.setOwnerId(user.getId());
     }
 
-    public static void editWallPostByRequest(Post post, String message, String attachments) {
-        String postIdPath = "response.post_id";
+    public static void editWallPost(Post post, String message, String attachments) {
+        String postIdPath = VkApiResponsePath.POST_ID;
         List<String> nonNullPaths = List.of(postIdPath);
         Map<String, Object> params = new HashMap<>();
-        params.put("owner_id", post.getOwnerId());
-        params.put("post_id", post.getId());
-        params.put("message", message);
-        params.put("attachments", attachments);
+        params.put(VkApiParam.OWNER_ID, post.getOwnerId());
+        params.put(VkApiParam.POST_ID, post.getId());
+        params.put(VkApiParam.MESSAGE, message);
+        params.put(VkApiParam.ATTACHMENTS, attachments);
         Response response = ResponseUtils.getVerifiedResponseForPostRequestWithParams(
-                RequestSpecifications.VkApiCommonGiven(), "/wall.edit", params,
+                RequestSpecifications.VkApiCommonGiven(), VkApiMethodPath.WALL_EDIT, params,
                 HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         ResponseUtils.verifyResponsePathValue(response, postIdPath, post.getId());
         post.setMessage(message);
@@ -96,57 +103,57 @@ public class VkApiUtils {
     }
 
     public static String getWallPostAttachmentsStringForPhoto(Photo photo) {
-        return String.format("photo%1$s_%2$s", photo.getOwnerId(), photo.getId());
+        return String.format(VkApiParam.ATTACHMENTS_PHOTO, photo.getOwnerId(), photo.getId());
     }
 
-    public static void createWallPostCommentByRequest(Post post, Comment comment) {
-        String commentIdPath = "response.comment_id";
+    public static void createWallPostComment(Post post, Comment comment) {
+        String commentIdPath = VkApiResponsePath.COMMENT_ID;
         List<String> nonNullPaths = List.of(commentIdPath);
         Map<String, Object> params = new HashMap<>();
-        params.put("owner_id", post.getOwnerId());
-        params.put("post_id", post.getId());
-        params.put("message", comment.getMessage());
+        params.put(VkApiParam.OWNER_ID, post.getOwnerId());
+        params.put(VkApiParam.POST_ID, post.getId());
+        params.put(VkApiParam.MESSAGE, comment.getMessage());
         Response response = ResponseUtils.getVerifiedResponseForPostRequestWithParams(
-                RequestSpecifications.VkApiCommonGiven(), "/wall.createComment", params,
+                RequestSpecifications.VkApiCommonGiven(), VkApiMethodPath.WALL_CREATE_COMMENT, params,
                 HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         comment.setId(response.jsonPath().getInt(commentIdPath));
         comment.setPostId(post.getId());
         comment.setOwnerId(post.getOwnerId());
     }
 
-    public static void verifyWallPostLikeUserIdByRequest(User user, Post post) {
-        String userIdPath = "response.items";
+    public static void verifyWallPostLikeUserId(User user, Post post) {
+        String userIdPath = VkApiResponsePath.ITEMS;
         List<String> nonNullPaths = List.of(userIdPath);
         Map<String, Object> params = new HashMap<>();
-        params.put("type", post.getType());
-        params.put("owner_id", post.getOwnerId());
-        params.put("item_id", post.getId());
+        params.put(VkApiParam.TYPE, post.getType());
+        params.put(VkApiParam.OWNER_ID, post.getOwnerId());
+        params.put(VkApiParam.ITEM_ID, post.getId());
         Response response = ResponseUtils.getVerifiedResponseForGetRequestWithParams(
-                RequestSpecifications.VkApiCommonGiven(), "/likes.getList", params,
+                RequestSpecifications.VkApiCommonGiven(), VkApiMethodPath.LIKES_GET_LIST, params,
                 HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         ResponseUtils.verifyResponseContainsItem(response, userIdPath, user.getId());
     }
 
-    public static void deleteWallPostByRequest(Post post) {
-        String responsePath = "response";
+    public static void deleteWallPost(Post post) {
+        String responsePath = VkApiResponsePath.RESPONSE;
         List<String> nonNullPaths = List.of(responsePath);
         Map<String, Object> params = new HashMap<>();
-        params.put("owner_id", post.getOwnerId());
-        params.put("post_id", post.getId());
+        params.put(VkApiParam.OWNER_ID, post.getOwnerId());
+        params.put(VkApiParam.POST_ID, post.getId());
         Response response = ResponseUtils.getVerifiedResponseForPostRequestWithParams(
-                RequestSpecifications.VkApiCommonGiven(), "/wall.delete", params,
+                RequestSpecifications.VkApiCommonGiven(), VkApiMethodPath.WALL_DELETE, params,
                 HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         ResponseUtils.verifyResponsePathValue(response, responsePath, 1);
     }
 
-    public static void deletePhotoByRequest(Photo photo) {
-        String responsePath = "response";
+    public static void deletePhoto(Photo photo) {
+        String responsePath = VkApiResponsePath.RESPONSE;
         List<String> nonNullPaths = List.of(responsePath);
         Map<String, Object> params = new HashMap<>();
-        params.put("owner_id", photo.getOwnerId());
-        params.put("photo_id", photo.getId());
+        params.put(VkApiParam.OWNER_ID, photo.getOwnerId());
+        params.put(VkApiParam.PHOTO_ID, photo.getId());
         Response response = ResponseUtils.getVerifiedResponseForPostRequestWithParams(
-                RequestSpecifications.VkApiCommonGiven(), "/photos.delete", params,
+                RequestSpecifications.VkApiCommonGiven(), VkApiMethodPath.PHOTOS_DELETE, params,
                 HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         ResponseUtils.verifyResponsePathValue(response, responsePath, 1);
     }
