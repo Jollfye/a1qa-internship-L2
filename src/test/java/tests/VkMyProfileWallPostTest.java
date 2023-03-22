@@ -5,52 +5,42 @@ import models.Photo;
 import models.Post;
 import models.User;
 import org.testng.annotations.Test;
-import steps.MyProfilePageSteps;
+import steps.AuthorizationFormSteps;
+import steps.WallFormSteps;
 import steps.NewsPageSteps;
-import steps.SignInVerificationPageSteps;
-import steps.WelcomePageSteps;
 import utilities.GetModelInstanceUtils;
 import utilities.RandomUtils;
 import utilities.api.VkApiUtils;
 import utilities.configuration.TestDataProvider;
 
 public class VkMyProfileWallPostTest extends BaseTest {
-    private final WelcomePageSteps welcomePageSteps = new WelcomePageSteps();
-    private final SignInVerificationPageSteps signInVerificationPageSteps =
-            new SignInVerificationPageSteps();
-    private final NewsPageSteps newsPageSteps = new NewsPageSteps();
-    private final MyProfilePageSteps myProfilePageSteps = new MyProfilePageSteps();
-
-    @Test(invocationCount = 3)
+    @Test()
     public void testVkMyProfileWallPost() {
-        welcomePageSteps.typePhoneAndClickSignInButton();
-        signInVerificationPageSteps.signInUsingPassword();
-        newsPageSteps.clickMyProfileLink();
+        AuthorizationFormSteps.typeLoginAndClickSignInButton(TestDataProvider.getLogin());
+        AuthorizationFormSteps.signInUsingPassword(TestDataProvider.getPassword());
+        NewsPageSteps.clickMyProfileLink();
         User user = new User();
-        VkApiUtils.setUserIdToCurrentByRequest(user);
-        Post post = GetModelInstanceUtils.getNewPostWithRandomMessage(
-                TestDataProvider.getRandomAlphanumericLength());
-        VkApiUtils.createUserWallPostByRequest(user, post);
-        myProfilePageSteps.verifyPostMessage(post);
-        Photo photo = GetModelInstanceUtils.getNewPhotoWithResource(
-                "testdata/images/cherry-blossom.jpg");
-        VkApiUtils.uploadPhotoToWallUploadServerByRequest(photo,
-                VkApiUtils.getUserPhotosWallUploadServerByRequest(user));
-        VkApiUtils.saveUserWallPhotoByRequest(user, photo);
-        VkApiUtils.editWallPostByRequest(post,
-                RandomUtils.getRandomAlphanumeric(
-                        TestDataProvider.getRandomAlphanumericLength()),
+        VkApiUtils.setCurrentUserData(user);
+        Post post = GetModelInstanceUtils.getNewPostWithRandomMessage(TestDataProvider.getRandomAlphanumericLength());
+        VkApiUtils.createUserWallPost(user, post);
+        WallFormSteps.verifyPostMessage(post);
+        WallFormSteps.verifyPostAuthorName(user, post);
+        Photo photo = GetModelInstanceUtils.getNewPhotoWithResource("testdata/images/cherry-blossom.jpg");
+        VkApiUtils.uploadPhotoToWallUploadServer(photo,
+                VkApiUtils.getUserPhotosWallUploadServer(user));
+        VkApiUtils.saveUserWallPhoto(user, photo);
+        VkApiUtils.editWallPost(post, RandomUtils.getRandomAlphanumeric(TestDataProvider.getRandomAlphanumericLength()),
                 VkApiUtils.getWallPostAttachmentsStringForPhoto(photo));
-        myProfilePageSteps.verifyPostMessage(post);
-        myProfilePageSteps.verifyPostPhotoDisplayed(post);
-        Comment comment = GetModelInstanceUtils.getNewCommentWithRandomMessage(
-                TestDataProvider.getRandomAlphanumericLength());
-        VkApiUtils.createWallPostCommentByRequest(post, comment);
-        myProfilePageSteps.clickShowNextCommentLink(post);
-        myProfilePageSteps.verifyCommentAuthorUserId(user, comment);
-        myProfilePageSteps.clickPostLikeButton(post);
-        VkApiUtils.verifyWallPostLikeUserIdByRequest(user, post);
-        VkApiUtils.deleteWallPostByRequest(post);
-        VkApiUtils.deletePhotoByRequest(photo);
+        WallFormSteps.verifyPostMessage(post);
+        WallFormSteps.verifyPostPhotoDisplayed(post);
+        Comment comment = GetModelInstanceUtils.getNewCommentWithRandomMessage(TestDataProvider.getRandomAlphanumericLength());
+        VkApiUtils.createWallPostComment(post, comment);
+        WallFormSteps.clickShowNextCommentLink(post);
+        WallFormSteps.verifyCommentAuthorId(user, comment);
+        WallFormSteps.clickPostLikeButton(post);
+        VkApiUtils.verifyWallPostLikeUserId(user, post);
+        VkApiUtils.deleteWallPost(post);
+        WallFormSteps.verifyPostDeleted(post);
+        VkApiUtils.deletePhoto(photo);
     }
 }
