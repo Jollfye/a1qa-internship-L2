@@ -1,14 +1,14 @@
 package steps.db;
 
-import db.models.Test;
+import models.db.Test;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
 
 @UtilityClass
 public class DbSteps {
-    public static void printTests(int limit) {
-        List<Test> tests = Test.get(limit);
+    public static void printTestsWhere(String where, Object... params) {
+        List<Test> tests = Test.getTestsWhere(where, params);
         tests.forEach(System.out::println);
     }
 }
