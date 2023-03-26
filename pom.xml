@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.a1qa</groupId>
-    <artifactId>DB</artifactId>
+    <artifactId>DB-API</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -26,9 +26,19 @@
             <version>8.0.32</version>
         </dependency>
         <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>5.3.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>7.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents.core5</groupId>
+            <artifactId>httpcore5</artifactId>
+            <version>5.2.1</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
