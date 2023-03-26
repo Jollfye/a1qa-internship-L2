@@ -9,14 +9,14 @@ import utilities.JsonReader;
 @UtilityClass
 public class TestDataProvider {
     private static final ISettingsFile getPostWithIdTestData =
-            JsonReader.getSettingsResourceFile("testdata/getPostWithIdTestData.json");
+            JsonReader.getSettingsResourceFile("testdata/api/getPostWithIdTestData.json");
     private static final ISettingsFile getResponseForNonExistentPostTestData =
-            JsonReader.getSettingsResourceFile("testdata/getResponseForNonExistentPostTestData.json");
+            JsonReader.getSettingsResourceFile("testdata/api/getResponseForNonExistentPostTestData.json");
     private static final ISettingsFile createPostTestData =
-            JsonReader.getSettingsResourceFile("testdata/createPostTestData.json");
+            JsonReader.getSettingsResourceFile("testdata/api/createPostTestData.json");
     private static final String testUser = FileReader.getFileContent(
             FileReader.getCanonicalPath(
-                    FileReader.getResourceFile("testdata/testUser.json")));
+                    FileReader.getResourceFile("testdata/api/testUser.json")));
 
     public static int getPostId() {
         return (int) getPostWithIdTestData.getValue("/postId");
