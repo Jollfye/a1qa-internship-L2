@@ -2,6 +2,7 @@ package steps.api;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import lombok.experimental.UtilityClass;
 import models.user.User;
 import org.apache.hc.core5.http.HttpStatus;
 import org.testng.Assert;
@@ -10,14 +11,15 @@ import utilities.configuration.Configuration;
 
 import java.util.List;
 
+@UtilityClass
 public class ApiUsersSteps {
-    public List<User> getUsersByRequest() {
+    public static List<User> getUsersByRequest() {
         Response response = ResponseUtils.getVerifiedResponseForGetRequest(
                 Configuration.getUsersPath(), HttpStatus.SC_OK, ContentType.JSON);
         return List.of(ResponseUtils.responseAs(response, User[].class));
     }
 
-    public void verifyUserWithIdFromUsersEqualsTestUser(List<User> users, int userId, User testUser) {
+    public static void verifyUserWithIdFromUsersEqualsTestUser(List<User> users, int userId, User testUser) {
         User user = users.stream()
                 .filter(u -> u.getId().equals(userId))
                 .findFirst()
@@ -26,14 +28,14 @@ public class ApiUsersSteps {
         verifyUserEqualsTestUser(user, testUser);
     }
 
-    public User getUserWithIdByRequest(int userId) {
+    public static User getUserWithIdByRequest(int userId) {
         Response response = ResponseUtils.getVerifiedResponseForGetRequest(
                 Configuration.getUsersPath() + userId,
                 HttpStatus.SC_OK, ContentType.JSON);
         return ResponseUtils.responseAs(response, User.class);
     }
 
-    public void verifyUserEqualsTestUser(User user, User testUser) {
+    public static void verifyUserEqualsTestUser(User user, User testUser) {
         Assert.assertEquals(user, testUser, "Users are not equal");
     }
 }
