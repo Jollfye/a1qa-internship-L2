@@ -4,6 +4,7 @@
     <test name="DB API">
         <classes>
             <class name="tests.db.AddNewEntryDbTest"/>
+            <class name="tests.db.ProcessTestDataTest"/>
         </classes>
     </test>
 </suite>
