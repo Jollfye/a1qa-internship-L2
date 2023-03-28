@@ -5,12 +5,10 @@ import steps.api.ApiPostsSteps;
 import utilities.configuration.TestDataProvider;
 
 public class GetResponseForNonExistentPostTest {
-    private final ApiPostsSteps apiPostsSteps = new ApiPostsSteps();
-
     @Test
-    public void testGetResponseForNonExistentPost() {
-        apiPostsSteps.verifyResponseBodyEmpty(
-                apiPostsSteps.getResponseForNonExistentPostWithId(
+    public static void testGetResponseForNonExistentPost() {
+        ApiPostsSteps.verifyResponseBodyEmpty(
+                ApiPostsSteps.getResponseForNonExistentPostWithId(
                         TestDataProvider.getNonExistentPostId()));
     }
 }

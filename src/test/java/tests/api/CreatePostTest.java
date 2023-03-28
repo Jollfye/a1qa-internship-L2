@@ -6,13 +6,11 @@ import steps.api.ApiPostsSteps;
 import utilities.configuration.TestDataProvider;
 
 public class CreatePostTest {
-    private final ApiPostsSteps apiPostsSteps = new ApiPostsSteps();
-
     @Test
-    public void testCreatePost() {
-        Post post = apiPostsSteps.getNewPostWithUserId(
+    public static void testCreatePost() {
+        Post post = ApiPostsSteps.getNewPostWithUserId(
                 TestDataProvider.getPostRequestUserId());
-        apiPostsSteps.verifyCreatedPostInformationCorrect(
-                apiPostsSteps.getPostFromResponseForCreatePostByRequest(post), post);
+        ApiPostsSteps.verifyCreatedPostInformationCorrect(
+                ApiPostsSteps.getPostFromResponseForCreatePostByRequest(post), post);
     }
 }

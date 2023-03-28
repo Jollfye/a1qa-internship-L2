@@ -5,12 +5,10 @@ import steps.api.ApiUsersSteps;
 import utilities.configuration.TestDataProvider;
 
 public class GetUsersTest {
-    private final ApiUsersSteps apiUsersSteps = new ApiUsersSteps();
-
     @Test
-    public void testGetUsers() {
-        apiUsersSteps.verifyUserWithIdFromUsersEqualsTestUser(
-                apiUsersSteps.getUsersByRequest(),
+    public static void testGetUsers() {
+        ApiUsersSteps.verifyUserWithIdFromUsersEqualsTestUser(
+                ApiUsersSteps.getUsersByRequest(),
                 TestDataProvider.getTestUserId(),
                 TestDataProvider.getTestUser());
     }

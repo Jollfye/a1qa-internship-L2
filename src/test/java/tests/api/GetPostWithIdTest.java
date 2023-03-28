@@ -5,11 +5,9 @@ import steps.api.ApiPostsSteps;
 import utilities.configuration.TestDataProvider;
 
 public class GetPostWithIdTest {
-    private final ApiPostsSteps apiPostsSteps = new ApiPostsSteps();
-
     @Test
-    public void testGetPostWithId() {
-        apiPostsSteps.verifyPostInformationCorrect(
-                apiPostsSteps.getPostWithIdByRequest(TestDataProvider.getPostId()));
+    public static void testGetPostWithId() {
+        ApiPostsSteps.verifyPostInformationCorrect(
+                ApiPostsSteps.getPostWithIdByRequest(TestDataProvider.getPostId()));
     }
 }
