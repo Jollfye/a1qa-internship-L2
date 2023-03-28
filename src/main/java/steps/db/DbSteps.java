@@ -111,12 +111,12 @@ public class DbSteps {
         tests.forEach(test -> {
             Status status = statuses.get(RandomUtils.getRandomInt(statuses.size()));
             test.setStatusId(status.getId());
-            test.setStartTime(DbTimestampUtils.getCurrentTimestamp());
+            test.setStartTime(DbTimestampUtils.getCurrentTimestampUpToSeconds());
             int waitSeconds = RandomUtils.getRandomInt(maxWaitSeconds);
             AqualityServices.getLogger().info("Simulating test '%s' for %d seconds to status '%s'",
                     test.getName(), waitSeconds, status.getName());
             waitForSeconds(waitSeconds);
-            test.setEndTime(DbTimestampUtils.getCurrentTimestamp());
+            test.setEndTime(DbTimestampUtils.getCurrentTimestampUpToSeconds());
         });
     }
 
