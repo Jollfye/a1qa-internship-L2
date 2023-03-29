@@ -36,8 +36,10 @@ public class VkMyProfileWallPostTest extends BaseTest {
         VkApiSteps.editWallPost(post, RandomUtils.getRandomAlphanumeric(TestDataProvider.getRandomAlphanumericLength()),
                 VkApiSteps.getWallPostAttachmentsStringForPhoto(photo));
 
+        WallFormSteps.verifyPostMessageChanged(post);
         WallFormSteps.verifyPostMessage(post);
         WallFormSteps.verifyPostPhotoDisplayed(post);
+        WallFormSteps.verifyPostPhotoSameAsUploaded(post, photo);
 
         Comment comment = GetModelInstanceUtils.getNewCommentWithRandomMessage(TestDataProvider.getRandomAlphanumericLength());
         VkApiSteps.createWallPostComment(post, comment);

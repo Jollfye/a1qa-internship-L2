@@ -1,11 +1,16 @@
 package steps.ui;
 
+import aquality.selenium.browser.AqualityServices;
+import aquality.selenium.core.visualization.IImageComparator;
+import aquality.selenium.core.visualization.ImageFunctions;
 import lombok.experimental.UtilityClass;
 import models.Comment;
+import models.Photo;
 import models.Post;
 import models.User;
 import org.testng.Assert;
 import pages.WallForm;
+import utilities.configuration.TestDataProvider;
 
 @UtilityClass
 public class WallFormSteps {
@@ -14,6 +19,12 @@ public class WallFormSteps {
     public static void verifyPostMessage(Post post) {
         Assert.assertEquals(wallForm.getPostText(post),
                 post.getMessage(), "Post message is not correct");
+    }
+
+    public static void verifyPostMessageChanged(Post post) {
+        Assert.assertTrue(AqualityServices.getConditionalWait().waitFor(() ->
+                        !wallForm.getPostText(post).equals(post.getPreviousMessage())),
+                "Post message is not changed");
     }
 
     public static void verifyPostAuthorName(User user, Post post) {
@@ -28,6 +39,15 @@ public class WallFormSteps {
 
     public static void verifyPostPhotoDisplayed(Post post) {
         Assert.assertTrue(wallForm.postPhotoIsDisplayed(post), "Post photo is not displayed");
+    }
+
+    public static void verifyPostPhotoSameAsUploaded(Post post, Photo photo) {
+        float percentageDifference = AqualityServices.get(IImageComparator.class).percentageDifference(
+                wallForm.getPostPhotoScreenshot(post), ImageFunctions.readImage(photo.getFile()));
+        float percentageDifferenceThreshold = TestDataProvider.getPhotoPercentageDifferenceThreshold();
+        Assert.assertTrue(percentageDifference <= percentageDifferenceThreshold,
+                String.format("Post photo is not the same as uploaded. Expected difference is less than %1$s, but actual is %2$s",
+                        percentageDifferenceThreshold, percentageDifference));
     }
 
     public static void clickShowNextCommentLink(Post post) {

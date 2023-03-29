@@ -100,6 +100,7 @@ public class VkApiSteps {
                 RequestSpecifications.VkApiCommonGiven(), VkApiMethodPath.WALL_EDIT, params,
                 HttpStatus.SC_OK, ContentType.JSON, nonNullPaths);
         ResponseUtils.verifyResponsePathValue(response, postIdPath, post.getId());
+        post.setPreviousMessage(post.getMessage());
         post.setMessage(message);
         post.setAttachments(attachments);
     }

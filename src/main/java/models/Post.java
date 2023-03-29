@@ -8,5 +8,6 @@ public class Post {
     private Integer ownerId;
     private String type;
     private String message;
+    private String previousMessage;
     private String attachments;
 }
