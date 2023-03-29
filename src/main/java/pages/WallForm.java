@@ -1,5 +1,6 @@
 package pages;
 
+import aquality.selenium.core.visualization.ImageFunctions;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.IButton;
 import aquality.selenium.elements.interfaces.ILabel;
@@ -8,6 +9,8 @@ import aquality.selenium.forms.Form;
 import models.Comment;
 import models.Post;
 import org.openqa.selenium.By;
+
+import java.awt.Image;
 
 public class WallForm extends Form {
     private static final String POSTS_CONTAINER_XPATH = "//div[@id='page_wall_posts']";
@@ -34,6 +37,10 @@ public class WallForm extends Form {
 
     public boolean postPhotoIsDisplayed(Post post) {
         return getPostPhotoContainer(post).state().waitForDisplayed();
+    }
+
+    public Image getPostPhotoScreenshot(Post post) {
+        return ImageFunctions.getScreenshotAsImage(getPostPhotoContainer(post).getElement());
     }
 
     public void clickShowNextCommentLink(Post post) {

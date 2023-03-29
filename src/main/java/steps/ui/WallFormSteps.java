@@ -48,6 +48,8 @@ public class WallFormSteps {
         Assert.assertTrue(percentageDifference <= percentageDifferenceThreshold,
                 String.format("Post photo is not the same as uploaded. Expected difference is less than %1$s, but actual is %2$s",
                         percentageDifferenceThreshold, percentageDifference));
+        AqualityServices.getLogger().info(String.format("Post photo is the same as uploaded. Difference is %1$s, threshold is %2$s",
+                percentageDifference, percentageDifferenceThreshold));
     }
 
     public static void clickShowNextCommentLink(Post post) {

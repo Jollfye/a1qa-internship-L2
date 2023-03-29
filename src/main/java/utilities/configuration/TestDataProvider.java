@@ -26,4 +26,8 @@ public class TestDataProvider {
     public static int getRandomAlphanumericLength() {
         return (int) vkMyProfileWallPostTestData.getValue("/randomAlphanumericLength");
     }
+
+    public static Float getPhotoPercentageDifferenceThreshold() {
+        return Float.valueOf(vkMyProfileWallPostTestData.getValue("/photoPercentageDifferenceThreshold").toString());
+    }
 }
