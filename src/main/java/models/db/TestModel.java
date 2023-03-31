@@ -46,8 +46,8 @@ public class TestModel {
                 test.getId());
     }
 
-    public static int delete(String where, Object... params) {
-        return DbQueryUtils.executeUpdate(String.format(DbTableQuery.DELETE_WHERE, DbTable.TEST, where), params);
+    public static int delete(TestModel test) {
+        return DbQueryUtils.executeUpdate(String.format(DbTableQuery.DELETE, DbTable.TEST), test.getId());
     }
 
     private static TestModel mapTest(ResultSet resultSet) {
