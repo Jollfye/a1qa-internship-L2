@@ -28,15 +28,6 @@ public class Session {
         return DbQueryUtils.executeUpdate(DbTableQuery.INSERT_SESSION, session.getSessionKey(), session.getCreatedTime(), session.getBuildNumber());
     }
 
-    public static int edit(Session session) {
-        return DbQueryUtils.executeUpdate(DbTableQuery.UPDATE_SESSION, session.getSessionKey(), session.getCreatedTime(), session.getBuildNumber(),
-                session.getId());
-    }
-
-    public static int delete(String where, Object... params) {
-        return DbQueryUtils.executeUpdate(String.format(DbTableQuery.DELETE_WHERE, DbTable.SESSION, where), params);
-    }
-
     private static Session mapSession(ResultSet resultSet) {
         try {
             return Session.builder()
