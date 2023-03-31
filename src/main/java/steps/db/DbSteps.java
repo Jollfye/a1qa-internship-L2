@@ -1,6 +1,7 @@
 package steps.db;
 
 import aquality.selenium.browser.AqualityServices;
+import constants.db.DbDataFilterConditions;
 import enums.db.TestStatus;
 import lombok.experimental.UtilityClass;
 import models.db.Author;
@@ -13,19 +14,20 @@ import utilities.RandomUtils;
 import utilities.db.DbTimestampUtils;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @UtilityClass
 public class DbSteps {
     public static List<Status> getAllStatuses() {
-        return Status.get("1 = 1");
+        return Status.get(DbDataFilterConditions.NO_FILTER);
     }
 
     public static Status getStatusByName(TestStatus testStatus) {
-        return Status.get("name = ?", testStatus.name()).get(0);
+        return Status.get(DbDataFilterConditions.NAME, testStatus.toString()).get(0);
     }
 
     public static List<Project> getProjectsByName(String name) {
-        return Project.get("name = ?", name);
+        return Project.get(DbDataFilterConditions.NAME, name);
     }
 
     public static Project getProjectByName(String name) {
@@ -34,12 +36,12 @@ public class DbSteps {
 
     public static void addProject(Project project) {
         if (getProjectsByName(project.getName()).isEmpty()) {
-            Project.add(project);
+            verifyAffectedRowsMoreThanZero(Project.add(project));
         }
     }
 
     public static List<Session> getSessionsBySessionKey(String sessionKey) {
-        return Session.get("session_key = ?", sessionKey);
+        return Session.get(DbDataFilterConditions.SESSION_KEY, sessionKey);
     }
 
     public static Session getSessionBySessionKey(String sessionKey) {
@@ -48,12 +50,12 @@ public class DbSteps {
 
     public static void addSession(Session session) {
         if (getSessionsBySessionKey(session.getSessionKey()).isEmpty()) {
-            Session.add(session);
+            verifyAffectedRowsMoreThanZero(Session.add(session));
         }
     }
 
     public static List<Author> getMatchingAuthors(Author author) {
-        return Author.get("name = ? AND login = ? AND email = ?",
+        return Author.get(DbDataFilterConditions.MATCHING_AUTHOR,
                 author.getName(), author.getLogin(), author.getEmail());
     }
 
@@ -63,7 +65,7 @@ public class DbSteps {
 
     public static void addAuthor(Author author) {
         if (getMatchingAuthors(author).isEmpty()) {
-            Author.add(author);
+            verifyAffectedRowsMoreThanZero(Author.add(author));
         }
     }
 
@@ -76,14 +78,14 @@ public class DbSteps {
     }
 
     public static List<TestModel> getMatchingTests(TestModel test) {
-        return TestModel.get("name = ? AND status_id = ? AND method_name = ? AND project_id = ? AND session_id = ? AND start_time = ? AND end_time = ? AND env = ? AND browser = ? AND author_id = ?",
+        return TestModel.get(DbDataFilterConditions.MATCHING_TEST,
                 test.getName(), test.getStatusId(), test.getMethodName(), test.getProjectId(),
                 test.getSessionId(), test.getStartTime(), test.getEndTime(),
                 test.getEnv(), test.getBrowser(), test.getAuthorId());
     }
 
     public static void addTests(List<TestModel> tests) {
-        verifyAffectedRowsMoreThanZero(tests.stream().mapToInt(TestModel::add).sum());
+        tests.forEach(DbSteps::addTest);
     }
 
     public static void addTest(TestModel test) {
@@ -91,14 +93,7 @@ public class DbSteps {
     }
 
     public static List<TestModel> getTestsWhereIDContainsTwoRandomRepeatingDigitsWithLimit(int limit) {
-        return TestModel.get("id REGEXP '.*(.)\\1.*' LIMIT ?", limit);
-    }
-
-    public static void setTestsProjectAndAuthor(List<TestModel> tests, Project project, Author author) {
-        tests.forEach(test -> {
-            test.setProjectId(project.getId());
-            test.setAuthorId(author.getId());
-        });
+        return TestModel.get(DbDataFilterConditions.ID_CONTAINS_TWO_RANDOM_REPEATING_DIGITS_LIMIT, limit);
     }
 
     public static List<TestModel> copySelectedTestsWithNewCurrentProjectAndAuthor(List<TestModel> tests, Project project, Author author) {
@@ -107,14 +102,22 @@ public class DbSteps {
         return getMatchingTestsList(tests);
     }
 
+    private static void setTestsProjectAndAuthor(List<TestModel> tests, Project project, Author author) {
+        tests.forEach(test -> {
+            test.setProjectId(project.getId());
+            test.setAuthorId(author.getId());
+        });
+    }
+
     public static void simulateTests(List<TestModel> tests, List<Status> statuses, int maxWaitSeconds) {
+        AtomicInteger testNumber = new AtomicInteger(1);
         tests.forEach(test -> {
             Status status = statuses.get(RandomUtils.getRandomInt(statuses.size()));
             test.setStatusId(status.getId());
             test.setStartTime(DbTimestampUtils.getCurrentTimestampUpToSeconds());
             int waitSeconds = RandomUtils.getRandomInt(maxWaitSeconds);
-            AqualityServices.getLogger().info("Simulating test '%s' for %d seconds to status '%s'",
-                    test.getName(), waitSeconds, status.getName());
+            AqualityServices.getLogger().info("Simulating test %d: '%s' for %d seconds to status '%s'",
+                    testNumber.getAndIncrement(), test.getName(), waitSeconds, status.getName());
             waitForSeconds(waitSeconds);
             test.setEndTime(DbTimestampUtils.getCurrentTimestampUpToSeconds());
         });
@@ -137,24 +140,23 @@ public class DbSteps {
     }
 
     public static void deleteTest(TestModel test) {
-        verifyAffectedRowsMoreThanZero(TestModel.delete("id = ?", test.getId()));
+        verifyAffectedRowsMoreThanZero(TestModel.delete(test));
     }
 
-    public static void verifyTests(List<TestModel> testModels) {
-        testModels.forEach(DbSteps::verifyTest);
+    public static void verifyTests(List<TestModel> tests) {
+        tests.forEach(DbSteps::verifyTest);
     }
 
-    public static void verifyTest(TestModel testModel) {
-        TestModel test = getMatchingTest(testModel);
-        Assert.assertEquals(test, testModel, "Test is not as expected");
+    public static void verifyTest(TestModel test) {
+        Assert.assertEquals(getMatchingTest(test), test, "Test is not as expected");
     }
 
-    public static void verifyTestsDeleted(List<TestModel> testModels) {
-        testModels.forEach(DbSteps::verifyTestDeleted);
+    public static void verifyTestsDeleted(List<TestModel> tests) {
+        tests.forEach(DbSteps::verifyTestDeleted);
     }
 
-    public static void verifyTestDeleted(TestModel testModel) {
-        Assert.assertTrue(getMatchingTests(testModel).isEmpty(), "Test was not deleted");
+    public static void verifyTestDeleted(TestModel test) {
+        Assert.assertTrue(getMatchingTests(test).isEmpty(), "Test was not deleted");
     }
 
     private static void verifyAffectedRowsMoreThanZero(int actual) {
