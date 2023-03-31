@@ -29,12 +29,9 @@ public class WallFormSteps {
 
     public static void verifyPostAuthorName(User user, Post post) {
         String authorName = wallForm.getPostAuthorName(post);
-        Assert.assertTrue(authorName.contains(user.getFirstName()),
-                String.format("Post author name '%1$s' does not contain first name '%2$s'",
-                        authorName, user.getFirstName()));
-        Assert.assertTrue(authorName.contains(user.getLastName()),
-                String.format("Post author name '%1$s' does not contain last name '%2$s'",
-                        authorName, user.getLastName()));
+        Assert.assertEquals(authorName, user.getFirstName() + " " + user.getLastName(),
+                String.format("Post author name '%1$s' does not equal to '%2$s %3$s'",
+                        authorName, user.getFirstName(), user.getLastName()));
     }
 
     public static void verifyPostPhotoDisplayed(Post post) {
