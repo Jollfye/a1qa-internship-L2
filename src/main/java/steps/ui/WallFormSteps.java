@@ -12,6 +12,8 @@ import org.testng.Assert;
 import pages.WallForm;
 import utilities.configuration.TestDataProvider;
 
+import java.awt.Image;
+
 @UtilityClass
 public class WallFormSteps {
     private static final WallForm wallForm = new WallForm();
@@ -39,8 +41,10 @@ public class WallFormSteps {
     }
 
     public static void verifyPostPhotoSameAsUploaded(Post post, Photo photo) {
+        Image postPhotoScreenshot = wallForm.getPostPhotoScreenshot(post);
+        Image uploadedPhoto = ImageFunctions.readImage(photo.getFile());
         float percentageDifference = AqualityServices.get(IImageComparator.class).percentageDifference(
-                wallForm.getPostPhotoScreenshot(post), ImageFunctions.readImage(photo.getFile()));
+                postPhotoScreenshot, uploadedPhoto);
         float percentageDifferenceThreshold = TestDataProvider.getPhotoPercentageDifferenceThreshold();
         Assert.assertTrue(percentageDifference <= percentageDifferenceThreshold,
                 String.format("Post photo is not the same as uploaded. Expected difference is less than %1$s, but actual is %2$s",
