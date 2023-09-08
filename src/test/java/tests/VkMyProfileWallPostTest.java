@@ -4,16 +4,21 @@ import models.Comment;
 import models.Photo;
 import models.Post;
 import models.User;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
+import steps.api.VkApiSteps;
 import steps.ui.AuthorizationFormSteps;
-import steps.ui.WallFormSteps;
 import steps.ui.NewsPageSteps;
+import steps.ui.WallFormSteps;
 import utilities.GetModelInstanceUtils;
 import utilities.RandomUtils;
-import steps.api.VkApiSteps;
 import utilities.configuration.TestDataProvider;
 
 public class VkMyProfileWallPostTest extends BaseTest {
+    private Post post;
+    private Photo photo;
+
     @Test()
     public void testVkMyProfileWallPost() {
         AuthorizationFormSteps.typeLoginAndClickSignInButton(TestDataProvider.getLogin());
@@ -23,13 +28,13 @@ public class VkMyProfileWallPostTest extends BaseTest {
 
         User user = new User();
         VkApiSteps.setCurrentUserData(user);
-        Post post = GetModelInstanceUtils.getNewPostWithRandomMessage(TestDataProvider.getRandomAlphanumericLength());
+        post = GetModelInstanceUtils.getNewPostWithRandomMessage(TestDataProvider.getRandomAlphanumericLength());
         VkApiSteps.createUserWallPost(user, post);
 
         WallFormSteps.verifyPostMessage(post);
         WallFormSteps.verifyPostAuthorName(user, post);
 
-        Photo photo = GetModelInstanceUtils.getNewPhotoWithResource("testdata/images/cherry-blossom.jpg");
+        photo = GetModelInstanceUtils.getNewPhotoWithResource("testdata/images/cherry-blossom.jpg");
         VkApiSteps.uploadPhotoToWallUploadServer(photo,
                 VkApiSteps.getUserPhotosWallUploadServer(user));
         VkApiSteps.saveUserWallPhoto(user, photo);
@@ -56,5 +61,14 @@ public class VkMyProfileWallPostTest extends BaseTest {
         WallFormSteps.verifyPostDeleted(post);
 
         VkApiSteps.deletePhoto(photo);
+    }
+
+    @AfterMethod
+    public void tearDown(ITestResult result) {
+        if (result.getStatus() == ITestResult.FAILURE) {
+            VkApiSteps.deleteWallPost(post);
+            VkApiSteps.deletePhoto(photo);
+        }
+        super.tearDown();
     }
 }
