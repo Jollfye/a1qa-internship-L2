@@ -13,6 +13,10 @@ import pages.WallForm;
 import utilities.configuration.TestDataProvider;
 
 import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.file.Paths;
 
 @UtilityClass
 public class WallFormSteps {
@@ -46,11 +50,31 @@ public class WallFormSteps {
         float percentageDifference = AqualityServices.get(IImageComparator.class).percentageDifference(
                 postPhotoScreenshot, uploadedPhoto);
         float percentageDifferenceThreshold = TestDataProvider.getPhotoPercentageDifferenceThreshold();
-        Assert.assertTrue(percentageDifference <= percentageDifferenceThreshold,
-                String.format("Post photo is not the same as uploaded. Expected difference is less than %1$s, but actual is %2$s",
-                        percentageDifferenceThreshold, percentageDifference));
+        boolean condition = percentageDifference <= percentageDifferenceThreshold;
+        if (!condition) {
+            String errorMessage = String.format("Post photo is not the same as uploaded. Expected difference is less than %1$s, but actual is %2$s",
+                    percentageDifferenceThreshold, percentageDifference);
+            throw new CustomAssertionError(errorMessage, post, postPhotoScreenshot, uploadedPhoto);
+        }
         AqualityServices.getLogger().info(String.format("Post photo is the same as uploaded. Difference is %1$s, threshold is %2$s",
                 percentageDifference, percentageDifferenceThreshold));
+    }
+
+    private static class CustomAssertionError extends AssertionError {
+        public CustomAssertionError(String message, Post post, Image postPhotoScreenshot, Image uploadedPhoto) {
+            super(message);
+            AqualityServices.getLogger().error(message);
+            try {
+                File file = Paths.get("./src/main/resources/testdata/images",
+                        "post_photo_screenshot_" + post.getId() + ".png").toFile();
+                ImageFunctions.save(postPhotoScreenshot, file, "png");
+                file = Paths.get("./src/main/resources/testdata/images",
+                        "post_photo_" + post.getId() + ".png").toFile();
+                ImageFunctions.save(uploadedPhoto, file, "png");
+            } catch (IOException e) {
+                throw new UncheckedIOException("Failed to save images", e);
+            }
+        }
     }
 
     public static void clickShowNextCommentLink(Post post) {
