@@ -1,5 +1,8 @@
 package steps.api;
 
+import constants.api.VkApiMethodPath;
+import constants.api.VkApiParam;
+import constants.api.VkApiResponsePath;
 import io.restassured.http.ContentType;
 import lombok.experimental.UtilityClass;
 import models.Comment;
@@ -11,9 +14,6 @@ import utilities.JsonReader;
 import utilities.api.RequestSpecifications;
 import utilities.api.ResponseUtils;
 import utilities.api.ResponseWrapper;
-import utilities.api.constants.VkApiMethodPath;
-import utilities.api.constants.VkApiParam;
-import utilities.api.constants.VkApiResponsePath;
 
 import java.util.HashMap;
 import java.util.List;

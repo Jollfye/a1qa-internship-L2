@@ -1,8 +1,8 @@
 package utilities.api;
 
+import constants.api.VkApiParam;
 import io.restassured.specification.RequestSpecification;
 import lombok.experimental.UtilityClass;
-import utilities.api.constants.VkApiParam;
 import utilities.configuration.Configuration;
 import utilities.configuration.TestDataProvider;
 

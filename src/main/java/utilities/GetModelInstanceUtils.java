@@ -1,9 +1,9 @@
 package utilities;
 
+import constants.api.VkApiLikesObjectType;
 import models.Comment;
 import models.Photo;
 import models.Post;
-import utilities.api.constants.VkApiLikesObjectType;
 
 public class GetModelInstanceUtils {
     public static Post getNewPostWithRandomMessage(int length) {

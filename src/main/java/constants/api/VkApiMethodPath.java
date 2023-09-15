@@ -1,4 +1,4 @@
-package utilities.api.constants;
+package constants.api;
 
 import lombok.experimental.UtilityClass;
 

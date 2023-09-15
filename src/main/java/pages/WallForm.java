@@ -1,14 +1,19 @@
 package pages;
 
+import aquality.selenium.browser.AqualityServices;
 import aquality.selenium.core.visualization.ImageFunctions;
 import aquality.selenium.elements.HighlightState;
 import aquality.selenium.elements.interfaces.IButton;
 import aquality.selenium.elements.interfaces.ILabel;
 import aquality.selenium.elements.interfaces.ILink;
 import aquality.selenium.forms.Form;
+import constants.CssProperty;
+import constants.RegEx;
+import enums.JS;
 import models.Comment;
 import models.Post;
 import org.openqa.selenium.By;
+import utilities.StringUtils;
 
 import java.awt.Image;
 
@@ -40,7 +45,14 @@ public class WallForm extends Form {
     }
 
     public Image getPostPhotoScreenshot(Post post) {
+        String postPhotoUrl = getPostPhotoUrl(post);
+        AqualityServices.getBrowser().executeAsyncScript(JS.WAIT_FOR_IMAGE_TO_LOAD.getScript(), postPhotoUrl);
         return ImageFunctions.getScreenshotAsImage(getPostPhotoContainer(post).getElement());
+    }
+
+    private String getPostPhotoUrl(Post post) {
+        String backgroundImage = getPostPhotoContainer(post).getElement().getCssValue(CssProperty.BACKGROUND_IMAGE);
+        return StringUtils.getRegExGroup(backgroundImage, RegEx.BACKGROUND_IMAGE_URL, RegEx.FIRST_GROUP_INDEX);
     }
 
     public void clickShowNextCommentLink(Post post) {
