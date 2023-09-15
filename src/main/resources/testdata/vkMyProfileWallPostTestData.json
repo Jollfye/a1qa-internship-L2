@@ -1,4 +1,4 @@
 {
   "randomAlphanumericLength": 100,
-  "photoPercentageDifferenceThreshold": 0.1
+  "photoPercentageDifferenceThreshold": 0.02
 }
