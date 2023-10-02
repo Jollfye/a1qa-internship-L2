@@ -21,9 +21,10 @@ public class WallForm extends Form {
     private static final String POSTS_CONTAINER_XPATH = "//div[@id='page_wall_posts']";
     private static final String POST_CONTAINER_XPATH = "//div[@data-post-id='%1$s_%2$s']";
     private static final String POST_TEXT_LABEL_XPATH = "//div[contains(@class,'wall_post_text')]";
-    private static final String POST_PHOTO_CONTAINER_XPATH = "//a[contains(@href,'%1$s')]";
-    private static final String POST_SHOW_NEXT_COMMENT_LINK_XPATH = "//span[@class='js-replies_next_label']";
     private static final String POST_AUTHOR_LINK_XPATH = "//a[@class='author']";
+    private static final String POST_PHOTO_CONTAINER_XPATH = "//a[contains(@href,'%1$s')]";
+    private static final String POST_SHOW_NEXT_COMMENT_LINK_XPATH = "//span[contains(@class,'replies_next_label')]";
+    private static final String POST_COMMENT_AUTHOR_LINK_XPATH = "//a[contains(@class,'author')]";
     private static final String POST_LIKE_BUTTON_XPATH = "//div[contains(@data-reaction-target-object,'%1$s_%2$s')]";
     private static final String POST_LIKE_BUTTON_COUNTER_LABEL_XPATH = "//div[contains(@class,'_counter_anim_container')]";
     private static final String POST_AUTHOR_USER_ID_ATTRIBUTE = "data-from-id";
@@ -106,7 +107,7 @@ public class WallForm extends Form {
 
     private ILink getCommentAuthorLink(Comment comment) {
         return getElementFactory().getLink(
-                By.xpath(String.format(POSTS_CONTAINER_XPATH + POST_CONTAINER_XPATH + POST_AUTHOR_LINK_XPATH,
+                By.xpath(String.format(POSTS_CONTAINER_XPATH + POST_CONTAINER_XPATH + POST_COMMENT_AUTHOR_LINK_XPATH,
                         comment.getOwnerId(), comment.getId())), "Comment author link");
     }
 
