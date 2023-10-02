@@ -20,7 +20,7 @@ public class AuthorizationFormSteps {
     }
 
     public static void signInUsingPassword(String password) {
-        signInVerificationPage.clickUsePasswordButton();
+        signInVerificationPage.usePasswordVerificationMethod();
         signInVerificationPage.typePassword(password);
         signInVerificationPage.clickContinueButton();
         Assert.assertTrue(newsPage.state().waitForDisplayed(),
