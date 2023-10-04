@@ -1,5 +1,5 @@
 # a.koshelev
 ## Task
-![task](https://github.com/a1qa-education-L2/a.koshelev/assets/6180818/13cf0dd0-ff2b-435f-ba2d-25c626b73f7f)
+![task](https://github.com/Jollfye/a1qa-internship-L2/assets/6180818/4114f1f0-689d-4bb3-9e1d-9da179dddbd6)
 ## Database schema
-![union_reporting](https://github.com/a1qa-education-L2/a.koshelev/assets/6180818/6b8232e1-efe2-44b9-93d2-8e9a067b8108)
+![union_reporting](https://github.com/Jollfye/a1qa-internship-L2/assets/6180818/183ca3be-9a8c-47c9-b335-79384f833dd6)
