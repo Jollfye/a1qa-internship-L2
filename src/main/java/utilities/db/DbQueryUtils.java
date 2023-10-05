@@ -20,7 +20,9 @@ public class DbQueryUtils {
             AqualityServices.getLogger().info("Executing query '%1$s'",
                     preparedStatement.toString().split(": ", 2)[1]);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return mapResultSet(resultSet, rowMapper);
+                List<T> results = mapResultSet(resultSet, rowMapper);
+                AqualityServices.getLogger().info("Query results: %1$s", results);
+                return results;
             }
         } catch (SQLException e) {
             throw new IllegalArgumentException(
